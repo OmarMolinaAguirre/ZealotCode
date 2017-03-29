@@ -48,8 +48,8 @@ public class HardwareZealot
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
-        leftMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightMotorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Define and initialize ALL installed servos.
         redServo     = hwMap.servo.get("redServo");

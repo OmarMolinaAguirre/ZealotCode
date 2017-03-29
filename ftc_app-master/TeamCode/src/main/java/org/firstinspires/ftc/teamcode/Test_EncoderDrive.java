@@ -115,8 +115,7 @@ public class Test_EncoderDrive extends LinearOpMode {
             robot.rightMotorB.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.leftMotorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.rightMotorB.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
             // reset the timeout time and start motion.
             runtime.reset();
@@ -140,9 +139,7 @@ public class Test_EncoderDrive extends LinearOpMode {
             robot.leftMotorB.setPower(0);
             robot.rightMotorB.setPower(0);
 
-            // Turn off RUN_TO_POSITION
-            robot.leftMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.rightMotorB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
             //  sleep(250);   // optional pause after each move
         }
