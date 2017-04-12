@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,6 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *   it. I don't feel like copying it right now.
  */
 
+@Disabled
 @Autonomous(name="FINAL Path Drawing", group="Zealot")
 public class Test_PathDrawing extends LinearOpMode {
 

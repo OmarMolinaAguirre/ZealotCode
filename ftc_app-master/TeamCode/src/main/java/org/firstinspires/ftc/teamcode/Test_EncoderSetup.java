@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -15,21 +14,23 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  *   it. I don't feel like copying it right now.
  */
 
-@Autonomous(name="Test ENCODER Drive", group="Zealot")
-public class Test_EncoderDrive extends LinearOpMode {
+@Autonomous(name="Test Encoder Setup (Newest)", group="Zealot")
+public class Test_EncoderSetup extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareZealot robot = new HardwareZealot();   // Use Zealot's hardware
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
-    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
-    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double DRIVE_SPEED = 0.2;
-    static final double TURN_180 = 9.0 * Math.PI;
-    static final double TURN_90 = TURN_180 / 2;
+    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+                                                          (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double     DRIVE_SPEED             = 0.2;
+    static final double     d180                = 9.0 * Math.PI;
+    static final double     d90                 = d180 / 2;
+
+
 
 
     @Override
@@ -45,10 +46,11 @@ public class Test_EncoderDrive extends LinearOpMode {
 
         sleep(3000);
 
-        encoderDrive(DRIVE_SPEED, 12.0, 12.0, 5.0);
-        encoderDrive(DRIVE_SPEED, TURN_90, -TURN_90, 5.0);
-        encoderDrive(DRIVE_SPEED, -TURN_180, TURN_180, 5.0);
-        encoderDrive(DRIVE_SPEED, TURN_90, -TURN_90, 5.0);
+        DriveForward(24);
+        TurnLeft(d90);
+        TurnRight(d180);
+        TurnLeft(d90);
+        DriveBackward(24);
 
 
         StopAll();
@@ -93,14 +95,6 @@ public class Test_EncoderDrive extends LinearOpMode {
 
 // Test Methods
 
-    /*
-    *  Method to perform a relative move, based on encoder counts.
-    *  Encoders are not reset as the move is based on the current position.
-    *  Move will stop if any of three conditions occur:
-    *  1) Move gets to the desired position
-    *  2) Move runs out of time
-    *  3) Driver stops the opmode running.
-    */
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
@@ -111,10 +105,11 @@ public class Test_EncoderDrive extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.leftMotorB.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newRightTarget = robot.rightMotorB.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
+            newLeftTarget = robot.leftMotorB.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
+            newRightTarget = robot.rightMotorB.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
             robot.leftMotorB.setTargetPosition(newLeftTarget);
             robot.rightMotorB.setTargetPosition(newRightTarget);
+
 
 
             // reset the timeout time and start motion.
@@ -128,8 +123,8 @@ public class Test_EncoderDrive extends LinearOpMode {
                     (robot.leftMotorB.isBusy() && robot.rightMotorB.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d",
+                telemetry.addData("Path1",  "Running to %7d :%7d", newLeftTarget,  newRightTarget);
+                telemetry.addData("Path2",  "Running at %7d :%7d",
                         robot.leftMotorB.getCurrentPosition(),
                         robot.rightMotorB.getCurrentPosition());
                 telemetry.update();
@@ -140,7 +135,27 @@ public class Test_EncoderDrive extends LinearOpMode {
             robot.rightMotorB.setPower(0);
 
 
+
             //  sleep(250);   // optional pause after each move
         }
     }
+    
+    //Weird Methods
+
+    public void DriveForward (double dist){
+        encoderDrive(DRIVE_SPEED, dist, dist, 10.0);
+    }
+
+    public void DriveBackward (double dist){
+        encoderDrive(DRIVE_SPEED, -dist, -dist, 10.0);
+    }
+
+    public void TurnRight (double rot){
+        encoderDrive(DRIVE_SPEED, rot, -rot, 10.0);
+    }
+
+    public void TurnLeft (double rot){
+        encoderDrive(DRIVE_SPEED, rot, -rot, 10.0);
+    }
+
 }
